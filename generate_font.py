@@ -58,6 +58,7 @@ def get_args(add_ignore_gooey=True):
     parser = argparse.ArgumentParser(description='DIVA Font Generator')
     output_args = parser.add_argument_group('Output', 'set the output options')
     output_args.add_argument('-o', '--output_name', default=None, help='name for output png and json files')
+    output_args.add_argument('-id', '--font_id', default=0, help='specify which inner font id to use when building the json')
     output_args.add_argument('-c', '--charlist', default=joinpath('misc', 'charlist.txt'), help='path to charlist file to use (default: {})'.format(joinpath('misc', 'charlist.txt')))
     font_args = parser.add_argument_group('Per-Font Settings', 'set the fonts to use -- all arguments accept comma-separated lists for fallback font support')
     font_args.add_argument('-f', '--font', default=None, help='source font file(s)')
@@ -199,6 +200,7 @@ if not args.output_name:
     exit(1)
 
 print ('Outputting to {}'.format(args.output_name))
+print ('Setting inner font id to {}'.format(args.font_id))
 
 
 font_advance_size = (0, 0)
@@ -373,7 +375,7 @@ for char in charlist:
 pil_image.save('{}.png'.format(args.output_name), 'PNG')
 
 out_font = {
-    "id": 0,
+    "id": int(args.font_id),
     "advance_width": font_advance_size[0],
     "line_height": font_advance_size[1],
     "box_width": font_box_size[0],
