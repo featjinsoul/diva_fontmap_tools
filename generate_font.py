@@ -58,6 +58,10 @@ def get_args(add_ignore_gooey=True):
     parser = argparse.ArgumentParser(description='DIVA Font Generator')
     output_args = parser.add_argument_group('Output', 'set the output options')
     output_args.add_argument('-o', '--output_name', default=None, help='name for output png and json files')
+    output_args.add_argument('--latin9_bold36', action='store_true', help="automatically generate the bold36latin9 font for MM+")
+    output_args.add_argument('--latin9', action='store_true', help='automatically generate the 36latin9 font for MM+')
+    output_args.add_argument('--japanese_bold36', action='store_true', help="automatically generate the bold36 font for MM+")
+    output_args.add_argument('--japanese36', action='store_true', help='automatically generate the 36 font for MM+')
     output_args.add_argument('-id', '--font_id', default=0, help='specify which inner font id to use when building the json')
     output_args.add_argument('-c', '--charlist', default=joinpath('misc', 'charlist.txt'), help='path to charlist file to use (default: {})'.format(joinpath('misc', 'charlist.txt')))
     font_args = parser.add_argument_group('Per-Font Settings', 'set the fonts to use -- all arguments accept comma-separated lists for fallback font support')
@@ -194,12 +198,41 @@ except Exception as e:
 
 print ('Charlist: {}'.format(args.charlist))
 
-
-if not args.output_name:
-    print ('Output name not specified')
+if args.latin9_bold36 and args.output_name:
+    print ('You cannot use both of these argumens. Please select one or the other.')
+    exit(1)
+if args.latin9 and args.output_name:
+    print ('You cannot use both of these argumens. Please select one or the other.')
+    exit(1)
+if args.japanese_bold36 and args.output_name:
+    print ('You cannot use both of these argumens. Please select one or the other.')
+    exit(1)
+if args.japanese36 and args.output_name:
+    print ('You cannot use both of these argumens. Please select one or the other.')
     exit(1)
 
-print ('Outputting to {}'.format(args.output_name))
+
+if args.latin9_bold36:
+    print ('Generating the bold36latin9 font'),
+    args.output_name = 'font14_36x36',
+    args.font_id = 15
+if args.latin9:
+    print ('Generating the 36latin9 font'),
+    args.output_name = 'font11_36x36',
+    args.font_id = 20
+if args.japanese_bold36:
+    print ('Generating the bold36 font'),
+    args.output_name = 'font22_36x36',
+    args.font_id = 17
+if args.japanese36:
+    print ('Generating the 36 font'),
+    args.output_name = 'font20_36x36',
+    args.font_id = 21
+
+if args.latin9_bold36 or args.latin9 or args.japanese_bold36 or args.japanese36:
+    print ('Outputting to {}'.format(args.output_name[0]))
+else:
+    print ('Outputting to {}'.format(args.output_name))
 print ('Setting inner font id to {}'.format(args.font_id))
 
 
@@ -372,7 +405,11 @@ for char in charlist:
         tex_idx = (0, tex_idx[1] + 1)
         coord = (0, coord[1] + font_box_size[1])
 
-pil_image.save('{}.png'.format(args.output_name), 'PNG')
+
+if args.latin9_bold36 or args.latin9 or args.japanese_bold36 or args.japanese36:
+    pil_image.save('{}.png'.format(args.output_name[0]), 'PNG')
+else:
+    pil_image.save('{}.png'.format(args.output_name), 'PNG')
 
 out_font = {
     "id": int(args.font_id),
@@ -388,5 +425,9 @@ out_font = {
     "chars": out_chars
 }
 
-with open('{}.json'.format(args.output_name), 'w') as f:
-    json.dump(out_font, f, indent=4)
+if args.latin9_bold36 or args.latin9 or args.japanese_bold36 or args.japanese36:
+    with open('{}.json'.format(args.output_name[0]), 'w') as f:
+        json.dump(out_font, f, indent=4)
+else:
+    with open('{}.json'.format(args.output_name), 'w') as f:
+        json.dump(out_font, f, indent=4)
