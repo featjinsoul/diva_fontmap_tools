@@ -148,3 +148,4 @@ cython_debug/
 *.ttf
 *.otf
 *.7z
+*.code-workspace

@@ -4,6 +4,7 @@ import tkinter as tk
 import tkinter.filedialog as fd
 from sys import platform
 import argparse
+import importlib.util
 
 def get_args(add_ignore_gooey=True):
     parser = argparse.ArgumentParser(description='DIVA Font Generator')
@@ -12,6 +13,24 @@ def get_args(add_ignore_gooey=True):
     return parser.parse_args()
 
 args = get_args()
+
+farc_spec = importlib.util.find_spec("farc")
+farc_exists = farc_spec is not None
+spr_spec = importlib.util.find_spec("spr")
+spr_exists = spr_spec is not None
+
+if farc_exists and spr_exists:
+    import farc
+    import spr
+    def replace_sprite_texture(farc_to_read, sprite_binary_to_edit, texname_to_edit, image_to_use, farc_to_write):
+        entries = farc.read(farc_to_read)
+        sprset = spr.read_from_raw(entries[sprite_binary_to_edit])
+        sprset.replace_texture(texname_to_edit, image_to_use)
+        farc.save(entries, farc_to_write, True)
+    var_replace_sprite = None
+else:
+    print("farc and spr are not present...")
+    print("not automating sprite creation!")
 
 root = tk.Tk()
 root.withdraw()
@@ -81,4 +100,18 @@ if platform == "darwin":
 elif platform == "win32":
     os.system("python fontmap_extract.py fontmap/")
 print("Successfully built fontmap farc!")
-
+print("Creating sprite farcs!")
+if replace_sprite_texture:
+    replace_sprite_texture("base_spr_fnt_36latin9.farc", "spr_fnt_36latin9.bin", "NOMERGE_D5COMP_000_0", "font11_36x36.png", "spr_fnt_36latin9.farc")
+    replace_sprite_texture("base_spr_fnt_36.farc", "spr_fnt_36.bin", "NOMERGE_D5COMP_000_0", "font20_36x36.png", "spr_fnt_36.farc")
+    replace_sprite_texture("base_spr_fnt_bold36.farc", "spr_fnt_bold36.bin", "NOMERGE_D5COMP_000_0", "font22_36x36.png", "spr_fnt_bold36.farc")
+    replace_sprite_texture("base_spr_fnt_bold36latin9.farc", "spr_fnt_bold36latin9.bin", "NOMERGE_D5COMP_000_0", "font14_36x36.png", "spr_fnt_bold36latin9.farc")
+    var_replace_sprite = True
+else: 
+    print("Skipping sprite creation!")
+if var_replace_sprite == True:
+    print("Cleaning up images..")
+    os.remove("font11_36x36.png")
+    os.remove("font14_36x36.png")
+    os.remove("font20_36x36.png")
+    os.remove("font22_36x36.png")

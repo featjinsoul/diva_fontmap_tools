@@ -54,6 +54,13 @@ Look in guides folder.
  - proportional_main_font.p enables proportional character width on the two main 24px fonts
  - separate_fonts.p makes the non-bold 24px font use font id 15
 
+ #### auto_generate_all
+ - Automatically generates all four fonts required (latin9, japanese, and bold variants) for MM+
+ - automates pretty much everything, but I don't have edge cases 100% figured out.
+ - will automate mod folder creation so that it becomes drag and drop for DMM
+ - Does require farc and spr by brogamer (https://github.com/BroGamer4256/spr, https://github.com/BroGamer4256/farc) 
+ - farc and spr are not prebuilt but I can redistribute them (and I'll do so later)
+
 ## Development Info
 License is MIT so do whatever you want, but I'd personally prefer if we avoid forks for now.
 
