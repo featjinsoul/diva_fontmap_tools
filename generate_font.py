@@ -198,7 +198,7 @@ except Exception as e:
 
 print ('Charlist: {}'.format(args.charlist))
 
-if args.latin9_bold36 and args.output_name:
+if args.latin9_bold36 or args.latin9 or args.japanese_bold36 or args.japanese36:
     print ('You cannot use both of these argumens. Please select one or the other.')
     exit(1)
 if args.latin9 and args.output_name:
