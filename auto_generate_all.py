@@ -141,7 +141,7 @@ except OSError as e:
     exit(1)
 # ok now I know the directories exist because I made them!
 try:
-    os.rename("spr_fnt_36latin9.farc", auth2d_folder_name + "/spr_fnt36_latin9.farc")
+    os.rename("spr_fnt_36latin9.farc", auth2d_folder_name + "/spr_fnt_36_latin9.farc")
     os.rename("spr_fnt_36.farc", auth2d_folder_name + "/spr_fnt_36.farc")
     os.rename("spr_fnt_bold36.farc", auth2d_folder_name + "/spr_fnt_bold36.farc")
     os.rename("spr_fnt_bold36latin9.farc", auth2d_folder_name + "/spr_fnt_bold36latin9.farc")
