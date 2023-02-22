@@ -87,7 +87,7 @@ elif platform == "win32":
 
 print()
 print()
-tk.messagebox.showwarning(message='About to move fontmap and generate farc.')
+print('About to move fontmap and generate farc.')
 print("Moving fontmaps into the fontmap directory..")
 try:
     os.replace("font11_36x36.json", "fontmap/font11_36x36.json")
@@ -122,12 +122,12 @@ if var_replace_sprite == True:
     os.remove("font22_36x36.png")
 print("Setting up mod folder..")
 toml_array = """enabled = true
-name = "IBM Plex® Fonts"
+name = "{} Font"
 description = "This is a mod that replaces both the LATIN9 and default (JP) fontsets. Does not include support for bold fonts at this time."
 version = "1.0"
 date = "22.07.2022"
 author = "feat_jinsoul"
-include = ["."]"""
+include = ["."]""".format(folder_name)
 try:
     if not os.path.isdir(folder_name):
         rom_folder_name = folder_name + "/rom"
@@ -141,7 +141,7 @@ except OSError as e:
     exit(1)
 # ok now I know the directories exist because I made them!
 try:
-    os.rename("spr_fnt_36latin9.farc", auth2d_folder_name + "/spr_fnt_36_latin9.farc")
+    os.rename("spr_fnt_36latin9.farc", auth2d_folder_name + "/spr_fnt_36latin9.farc")
     os.rename("spr_fnt_36.farc", auth2d_folder_name + "/spr_fnt_36.farc")
     os.rename("spr_fnt_bold36.farc", auth2d_folder_name + "/spr_fnt_bold36.farc")
     os.rename("spr_fnt_bold36latin9.farc", auth2d_folder_name + "/spr_fnt_bold36latin9.farc")
