@@ -29,7 +29,7 @@ regular_fontlist = list(regular_fontlist)
 for file in regular_fontlist:
     regular_fontlist = str(regular_fontlist)
 # fear me
-if platform == "darwin":
+if platform == "darwin" or platform == "linux":
     regular_fontlist = regular_fontlist.replace('(','').replace(')','').replace('[','').replace(']','').replace(', ',',')
 elif platform == "win32":
     regular_fontlist = regular_fontlist.replace('(','').replace(')','').replace('[','').replace(']','').replace(', ',',').replace("'",'')
@@ -41,7 +41,7 @@ bold_fontlist = list(bold_fontlist)
 for file in bold_fontlist:
     bold_fontlist = str(bold_fontlist)
 # fear me again
-if platform == "darwin":
+if platform == "darwin" or platform == "linux":
     bold_fontlist = bold_fontlist.replace('(','').replace(')','').replace('[','').replace(']','').replace(', ',',')
 elif platform == "win32":
     bold_fontlist = bold_fontlist.replace('(','').replace(')','').replace('[','').replace(']','').replace(', ',',').replace("'",'')
@@ -62,13 +62,15 @@ if farc_exists and spr_exists:
     }
     json_data = json.dumps(mod_json_array)
     folder_name = input("Please enter a folder name for the output. ")
+    rom_folder_name = folder_name + "/rom"
+    auth2d_folder_name = rom_folder_name + "/2d"
 else:
     print("farc and spr are not present...")
     print("not automating sprite creation!")
 
 print("Running scripts..")
 print("Your platform is {}...".format(platform))
-if platform == "darwin":
+if platform == "darwin" or platform == "linux":
     os.system("python3 generate_font.py -f {} -s 36 -m 36,36,38,38 --latin9".format(regular_fontlist))
     os.system("python3 generate_font.py -f {} -s 36 -m 36,36,38,38 --japanese36".format(regular_fontlist))
     os.system("python3 generate_font.py -f {} -s 36 -m 36,36,38,38 --latin9_bold36".format(bold_fontlist))
@@ -100,7 +102,7 @@ except OSError as error:
     exit(1)
 print("Successfully moved fontmaps into the fontmap directory!")
 
-if platform == "darwin":
+if platform == "darwin" or platform == "linux":
     os.system("python3 fontmap_extract.py fontmap/")
 elif platform == "win32":
     os.system("python fontmap_extract.py fontmap/")
@@ -130,8 +132,6 @@ author = "feat_jinsoul"
 include = ["."]""".format(folder_name)
 try:
     if not os.path.isdir(folder_name):
-        rom_folder_name = folder_name + "/rom"
-        auth2d_folder_name = rom_folder_name + "/2d"
         os.makedirs(folder_name)
         os.makedirs(rom_folder_name)
         os.makedirs(auth2d_folder_name)
@@ -158,10 +158,10 @@ except OSError as e:
     exit(1)
 # ok time to. um. make the json and the toml
 try:
-    with open("{}\\config.toml".format(folder_name), "a+", encoding="utf-8") as f:
+    with open("{}/config.toml".format(folder_name), "a+", encoding="utf-8") as f:
         f.write(toml_array)
-    with open("{}\\mod.json".format(folder_name), "a+", encoding="utf-8") as f2:
-        f2.write(json_data)
+    with open("{}/mod.json".format(folder_name), "a+", encoding="utf-8") as f:
+        f.write(json_data)
 except OSError as e:
     print(e)
     print("Unable to create the config.toml. Exiting...")
