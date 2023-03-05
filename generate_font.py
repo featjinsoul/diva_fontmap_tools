@@ -481,7 +481,6 @@ elif args.automate:
         replace_sprite_texture("base_spr_fnt_36.farc", "spr_fnt_36.bin", "NOMERGE_D5COMP_000_0", "font20_36x36.png", "spr_fnt_36.farc")
         replace_sprite_texture("base_spr_fnt_bold36.farc", "spr_fnt_bold36.bin", "NOMERGE_D5COMP_000_0", "font22_36x36.png", "spr_fnt_bold36.farc")
         replace_sprite_texture("base_spr_fnt_bold36latin9.farc", "spr_fnt_bold36latin9.bin", "NOMERGE_D5COMP_000_0", "font14_36x36.png", "spr_fnt_bold36latin9.farc")
-        exit(1)
         var_replace_sprite = True
     try:
         os.replace("font11_36x36.json", "fontmap/font11_36x36.json")
